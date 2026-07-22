@@ -4,39 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sagali — Catálogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --olivo:#6B7C4A;
-    --musgo:#4A5E28;
-    --salvia:#C3D19A;
-    --lino:#F4F1E8;
-    --tierra:#2C3A1A;
-    --ambar:#D4922A;
-    --terracota:#C4895A;
-    --sage:#8A8A6A;
-    --radius:14px;
-  }
+  :root{--olivo:#6B7C4A;--musgo:#4A5E28;--salvia:#C3D19A;--lino:#F4F1E8;--tierra:#2C3A1A;--ambar:#D4922A;--sage:#8A8A6A;--radius:14px;}
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--lino);
-    font-family: 'Poppins', 'Segoe UI', sans-serif;
-    color:var(--tierra);
-  }
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital@0;1&display=swap');
-  .voice{font-family:'Playfair Display', serif;}
-
+  body{margin:0;background:var(--lino);font-family:'Poppins','Segoe UI',sans-serif;color:var(--tierra);}
+  .voice{font-family:'Playfair Display',serif;}
   header{display:flex;flex-direction:column;align-items:center;padding:32px 16px 20px;text-align:center;}
   header img.logo{width:160px;margin-bottom:8px;}
   header p.tagline{color:var(--sage);font-size:14px;letter-spacing:0.08em;text-transform:uppercase;margin:0;}
-
   nav.tabs{display:flex;justify-content:center;gap:8px;padding:8px 16px 24px;flex-wrap:wrap;}
   nav.tabs button{background:transparent;border:1px solid var(--olivo);color:var(--musgo);padding:8px 20px;border-radius:999px;font-size:14px;cursor:pointer;transition:all .2s;font-family:inherit;}
   nav.tabs button.active{background:var(--olivo);color:var(--lino);}
-
   main{max-width:1100px;margin:0 auto;padding:0 16px 60px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));gap:24px;}
-
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;}
   .card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 10px rgba(44,58,26,0.08);display:flex;flex-direction:column;transition:transform .25s;}
   .card:hover{transform:translateY(-4px);}
   .card .imgwrap{width:100%;aspect-ratio:4/5;background:var(--salvia);overflow:hidden;position:relative;}
@@ -49,280 +31,147 @@
   .card .price.empty{font-size:13px;color:var(--sage);font-style:italic;font-weight:400;}
   .card .wa-btn{margin-top:10px;background:var(--olivo);color:#fff;border:none;padding:10px 14px;border-radius:999px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .2s;font-family:inherit;}
   .card .wa-btn:hover{background:var(--musgo);}
-
-  .empty-state{text-align:center;padding:60px 20px;color:var(--sage);}
-
+  .empty-state{text-align:center;padding:60px 20px;color:var(--sage);grid-column:1/-1;}
+  .loading-msg{text-align:center;padding:40px;color:var(--sage);grid-column:1/-1;}
+  .error-msg{text-align:center;padding:12px;color:#a33;font-size:13px;background:#fde8e8;border-radius:8px;margin-bottom:12px;grid-column:1/-1;}
   .admin-toggle{position:fixed;bottom:20px;right:20px;background:var(--musgo);color:#fff;width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;font-size:22px;box-shadow:0 4px 14px rgba(44,58,26,0.3);z-index:50;}
   .admin-panel{position:fixed;top:0;right:0;width:100%;max-width:420px;height:100%;background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,0.15);transform:translateX(100%);transition:transform .3s ease;z-index:100;overflow-y:auto;padding:24px;}
   .admin-panel.open{transform:translateX(0);}
   .admin-panel h2{margin-top:0;color:var(--musgo);font-size:20px;}
   .admin-panel label{display:block;font-size:12px;color:var(--sage);margin:14px 0 4px;text-transform:uppercase;letter-spacing:0.04em;}
-  .admin-panel input, .admin-panel select, .admin-panel textarea{width:100%;padding:9px 10px;border:1px solid var(--salvia);border-radius:8px;font-size:14px;font-family:inherit;color:var(--tierra);}
+  .admin-panel input,.admin-panel select,.admin-panel textarea{width:100%;padding:9px 10px;border:1px solid var(--salvia);border-radius:8px;font-size:14px;font-family:inherit;color:var(--tierra);}
   .admin-panel textarea{resize:vertical;min-height:60px;}
   .btn-row{display:flex;gap:8px;margin-top:20px;}
   .admin-panel button.save{flex:1;background:var(--olivo);color:#fff;border:none;padding:11px;border-radius:8px;cursor:pointer;font-size:14px;}
   .admin-panel button.save:disabled{opacity:0.6;cursor:default;}
-  .admin-panel button.close{background:transparent;border:1px solid var(--sage);color:var(--sage);padding:11px 16px;border-radius:8px;cursor:pointer;}
+  .admin-panel button.close-btn{background:transparent;border:1px solid var(--sage);color:var(--sage);padding:11px 16px;border-radius:8px;cursor:pointer;}
   .admin-list{margin-top:28px;border-top:1px solid var(--lino);padding-top:16px;}
   .admin-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--lino);font-size:13px;}
   .admin-item button{background:none;border:none;color:#c45a5a;cursor:pointer;font-size:12px;}
   .overlay{position:fixed;inset:0;background:rgba(44,58,26,0.3);z-index:90;display:none;}
   .overlay.open{display:block;}
   .img-preview{width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-top:8px;display:none;}
-  .loading-msg{text-align:center;padding:40px;color:var(--sage);grid-column:1/-1;}
-  .error-msg{text-align:center;padding:12px;color:#a33;font-size:13px;background:#fde8e8;border-radius:8px;margin-bottom:12px;}
 </style>
 </head>
 <body>
-
 <header>
   <img class="logo" src="/img/logo.png" alt="Sagali">
   <p class="tagline">Collares hechos a mano · inspirados en la naturaleza</p>
 </header>
-
 <nav class="tabs" id="tabs">
   <button class="active" data-filter="todos">Todos</button>
   <button data-filter="Casa">Casa</button>
   <button data-filter="Mar">Mar</button>
 </nav>
-
-<main>
-  <div id="grid" class="grid"></div>
-</main>
-
+<main><div id="grid" class="grid"></div></main>
 <div class="overlay" id="overlay"></div>
 <button class="admin-toggle" id="adminToggle" title="Administrar catálogo">✎</button>
-
 <div class="admin-panel" id="adminPanel">
   <h2>Administrar catálogo</h2>
-
   <label>Nombre del collar</label>
   <input type="text" id="f-nombre" placeholder="Ej. Vajilla de la Abuela">
-
   <label>Colección</label>
-  <select id="f-coleccion">
-    <option value="Casa">Casa</option>
-    <option value="Mar">Mar</option>
-  </select>
-
-  <label>Precio (MXN, déjalo vacío si aún no decides)</label>
+  <select id="f-coleccion"><option value="Casa">Casa</option><option value="Mar">Mar</option></select>
+  <label>Precio (MXN)</label>
   <input type="text" id="f-precio" placeholder="Ej. 450">
-
   <label>Descripción</label>
   <textarea id="f-desc" placeholder="Materiales, inspiración..."></textarea>
-
-  <label>Imagen (pega una URL, o sube un archivo abajo)</label>
+  <label>URL de imagen</label>
   <input type="text" id="f-imgurl" placeholder="https://...">
   <input type="file" id="f-imgfile" accept="image/*" style="margin-top:6px;">
   <img class="img-preview" id="imgPreview">
-
   <div class="btn-row">
     <button class="save" id="saveBtn">Guardar collar</button>
-    <button class="close" id="closeBtn">Cerrar</button>
+    <button class="close-btn" id="closeBtn">Cerrar</button>
   </div>
-
-  <div class="admin-list" id="adminList">
-    <p style="font-size:12px;color:var(--sage);margin-bottom:8px;">Collares guardados</p>
-  </div>
+  <div class="admin-list" id="adminList"></div>
 </div>
-
 <script>
-const WHATSAPP_NUMBER = "525513760914";
+const WA = "525513760914";
+let products = [], filter = "todos";
 
-let products = [];
-let currentFilter = "todos";
-let loading = true;
-let loadError = "";
-
-async function loadProducts(){
-  loading = true;
-  loadError = "";
-  render();
+async function load(){
+  render(true);
   try{
-    const resp = await fetch("/api/products");
-    if(!resp.ok) throw new Error("Respuesta no válida del servidor");
-    const data = await resp.json();
-    products = data.products || [];
+    const r = await fetch("/api/products");
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error || "Error");
+    products = d.products || [];
+    render();
   }catch(e){
-    loadError = "No se pudo cargar el catálogo. Verifica tu conexión.";
-    console.error(e);
+    document.getElementById("grid").innerHTML = '<div class="error-msg">No se pudo cargar el catálogo: ' + e.message + '</div>';
   }
-  loading = false;
-  render();
 }
 
-function render(){
+function render(loading){
   const grid = document.getElementById("grid");
-
-  if(loading){
-    grid.innerHTML = '<div class="loading-msg">Cargando catálogo...</div>';
-    return;
-  }
-
-  if(loadError){
-    grid.innerHTML = '<div class="error-msg" style="grid-column:1/-1;">' + loadError + '</div>';
-    return;
-  }
-
-  const filtered = currentFilter === "todos" ? products : products.filter(p => p.coleccion === currentFilter);
-
-  if(filtered.length === 0){
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-      <span>🌿</span>
-      <p>Aún no hay collares en esta colección.<br>Usa el botón ✎ para agregar el primero.</p>
-    </div>`;
-    return;
-  }
-
-  grid.innerHTML = filtered.map(p => {
-    const priceHtml = p.precio
-      ? `<div class="price">$${p.precio} MXN</div>`
-      : `<div class="price empty">Precio a consultar</div>`;
-    const msg = encodeURIComponent(`Hola, me interesa el collar "${p.nombre}" de Sagali. ¿Podrías darme más información?`);
-    const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
-    return `
-      <div class="card">
-        <div class="imgwrap">
-          <span class="badge">${p.coleccion}</span>
-          <img src="${p.img}" alt="${p.nombre}">
-        </div>
-        <div class="info">
-          <h3 class="voice">${p.nombre}</h3>
-          <p class="desc">${p.desc}</p>
-          ${priceHtml}
-          <button class="wa-btn" onclick="window.open('${waLink}', '_blank')">
-            💬 Preguntar por WhatsApp
-          </button>
-        </div>
-      </div>
-    `;
+  if(loading){ grid.innerHTML = '<div class="loading-msg">Cargando catálogo...</div>'; return; }
+  const list = filter === "todos" ? products : products.filter(p => p.coleccion === filter);
+  if(!list.length){ grid.innerHTML = '<div class="empty-state">🌿<p>Sin collares en esta colección.<br>Usa ✎ para agregar.</p></div>'; return; }
+  grid.innerHTML = list.map(p => {
+    const price = p.precio ? '<div class="price">$' + p.precio + ' MXN</div>' : '<div class="price empty">Precio a consultar</div>';
+    const msg = encodeURIComponent('Hola, me interesa el collar "' + p.nombre + '" de Sagali. ¿Me puedes dar más información?');
+    return '<div class="card"><div class="imgwrap"><span class="badge">' + p.coleccion + '</span><img src="' + p.img + '" alt="' + p.nombre + '" onerror="this.src=\'https://placehold.co/400x500/C3D19A/4A5E28?text=Sagali\'"></div><div class="info"><h3 class="voice">' + p.nombre + '</h3><p class="desc">' + p.desc + '</p>' + price + '<button class="wa-btn" onclick="window.open(\'https://wa.me/' + WA + '?text=' + msg + '\',\'_blank\')">💬 Preguntar por WhatsApp</button></div></div>';
   }).join("");
 }
 
-document.getElementById("tabs").addEventListener("click", (e) => {
+document.getElementById("tabs").addEventListener("click", e => {
   if(e.target.tagName !== "BUTTON") return;
   document.querySelectorAll("#tabs button").forEach(b => b.classList.remove("active"));
   e.target.classList.add("active");
-  currentFilter = e.target.dataset.filter;
+  filter = e.target.dataset.filter;
   render();
 });
 
-const adminPanel = document.getElementById("adminPanel");
-const overlay = document.getElementById("overlay");
+const panel = document.getElementById("adminPanel"), overlay = document.getElementById("overlay");
+document.getElementById("adminToggle").addEventListener("click", () => { panel.classList.add("open"); overlay.classList.add("open"); renderList(); });
+document.getElementById("closeBtn").addEventListener("click", close);
+overlay.addEventListener("click", close);
+function close(){ panel.classList.remove("open"); overlay.classList.remove("open"); }
 
-document.getElementById("adminToggle").addEventListener("click", () => {
-  adminPanel.classList.add("open");
-  overlay.classList.add("open");
-  renderAdminList();
-});
-document.getElementById("closeBtn").addEventListener("click", closeAdmin);
-overlay.addEventListener("click", closeAdmin);
-function closeAdmin(){
-  adminPanel.classList.remove("open");
-  overlay.classList.remove("open");
-}
-
-const imgFileInput = document.getElementById("f-imgfile");
-const imgUrlInput = document.getElementById("f-imgurl");
-const imgPreview = document.getElementById("imgPreview");
-let pendingImgData = "";
-
-imgFileInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if(!file) return;
+let pendingImg = "";
+document.getElementById("f-imgfile").addEventListener("change", e => {
+  const file = e.target.files[0]; if(!file) return;
   const reader = new FileReader();
-  reader.onload = (ev) => {
-    pendingImgData = ev.target.result;
-    imgPreview.src = pendingImgData;
-    imgPreview.style.display = "block";
-    imgUrlInput.value = "";
-  };
+  reader.onload = ev => { pendingImg = ev.target.result; document.getElementById("imgPreview").src = pendingImg; document.getElementById("imgPreview").style.display = "block"; document.getElementById("f-imgurl").value = ""; };
   reader.readAsDataURL(file);
 });
-imgUrlInput.addEventListener("input", () => {
-  if(imgUrlInput.value){
-    pendingImgData = "";
-    imgPreview.src = imgUrlInput.value;
-    imgPreview.style.display = "block";
-  }
+document.getElementById("f-imgurl").addEventListener("input", e => {
+  if(e.target.value){ pendingImg = ""; document.getElementById("imgPreview").src = e.target.value; document.getElementById("imgPreview").style.display = "block"; }
 });
 
 const saveBtn = document.getElementById("saveBtn");
-
 saveBtn.addEventListener("click", async () => {
   const nombre = document.getElementById("f-nombre").value.trim();
-  const coleccion = document.getElementById("f-coleccion").value;
-  const precio = document.getElementById("f-precio").value.trim();
-  const desc = document.getElementById("f-desc").value.trim();
-  const img = pendingImgData || imgUrlInput.value.trim() || "https://placehold.co/400x500/C3D19A/4A5E28?text=Sagali";
-
-  if(!nombre){
-    alert("Ponle un nombre al collar antes de guardar.");
-    return;
-  }
-
-  saveBtn.disabled = true;
-  saveBtn.textContent = "Guardando...";
-
+  if(!nombre){ alert("Ponle un nombre al collar."); return; }
+  const body = { nombre, coleccion: document.getElementById("f-coleccion").value, precio: document.getElementById("f-precio").value.trim(), desc: document.getElementById("f-desc").value.trim(), img: pendingImg || document.getElementById("f-imgurl").value.trim() || "" };
+  saveBtn.disabled = true; saveBtn.textContent = "Guardando...";
   try{
-    const resp = await fetch("/api/save-product", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({nombre, coleccion, precio, desc, img})
-    });
-    if(!resp.ok) throw new Error("Error al guardar");
-    const data = await resp.json();
-    products = data.products;
-
-    document.getElementById("f-nombre").value = "";
-    document.getElementById("f-precio").value = "";
-    document.getElementById("f-desc").value = "";
-    imgUrlInput.value = "";
-    imgPreview.style.display = "none";
-    pendingImgData = "";
-
-    render();
-    renderAdminList();
-  }catch(e){
-    alert("No se pudo guardar el collar. Intenta de nuevo.");
-    console.error(e);
-  }
-
-  saveBtn.disabled = false;
-  saveBtn.textContent = "Guardar collar";
+    const r = await fetch("/api/save-product", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body) });
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error);
+    products = d.products;
+    ["f-nombre","f-precio","f-desc","f-imgurl"].forEach(id => document.getElementById(id).value = "");
+    document.getElementById("imgPreview").style.display = "none"; pendingImg = "";
+    render(); renderList();
+  }catch(e){ alert("Error al guardar: " + e.message); }
+  saveBtn.disabled = false; saveBtn.textContent = "Guardar collar";
 });
 
-function renderAdminList(){
-  const list = document.getElementById("adminList");
-  const items = products.map(p => `
-    <div class="admin-item">
-      <span>${p.nombre} (${p.coleccion})</span>
-      <button onclick="deleteProduct('${p.id}')">Eliminar</button>
-    </div>
-  `).join("");
-  list.innerHTML = `<p style="font-size:12px;color:var(--sage);margin-bottom:8px;">Collares guardados (${products.length})</p>${items}`;
+function renderList(){
+  document.getElementById("adminList").innerHTML = '<p style="font-size:12px;color:var(--sage);margin-bottom:8px;">Collares guardados (' + products.length + ')</p>' + products.map(p => '<div class="admin-item"><span>' + p.nombre + ' (' + p.coleccion + ')</span><button onclick="del(\'' + p.id + '\')">Eliminar</button></div>').join("");
 }
 
-window.deleteProduct = async function(id){
+window.del = async function(id){
   try{
-    const resp = await fetch("/api/save-product", {
-      method: "DELETE",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({id})
-    });
-    if(!resp.ok) throw new Error("Error al eliminar");
-    const data = await resp.json();
-    products = data.products;
-    render();
-    renderAdminList();
-  }catch(e){
-    alert("No se pudo eliminar el collar.");
-    console.error(e);
-  }
+    const r = await fetch("/api/save-product", { method:"DELETE", headers:{"Content-Type":"application/json"}, body: JSON.stringify({id}) });
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error);
+    products = d.products; render(); renderList();
+  }catch(e){ alert("Error al eliminar: " + e.message); }
 };
 
-loadProducts();
+load();
 </script>
-
 </body>
 </html>
